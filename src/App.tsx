@@ -1,25 +1,24 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+
+import {Switch, Route} from 'react-router-dom';
+
+import Welcome from 'pages/Welcome/Welcome';
+import Auth from 'pages/AuthPage/Auth';
+import Layout from 'components/Layout/Layout';
+import AuthContextProvider from 'context/Auth-context';
+import ChangePass from 'components/Auth/ChangePass/ChangePass';
+
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <AuthContextProvider>
+      <Layout>
+        <Switch>
+          <Route path='/' component={Welcome} exact />
+          <Route path='/auth' component={Auth} />
+          <Route path='/change-password' component={ChangePass} />
+        </Switch>
+      </Layout>
+    </AuthContextProvider>
   );
 }
 

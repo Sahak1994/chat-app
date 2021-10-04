@@ -1,0 +1,1 @@
+export type AuthPage = 'sign-in' | 'sign-up' | 'change-pass';
