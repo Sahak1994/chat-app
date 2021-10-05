@@ -9,6 +9,9 @@ import TextField from 'elements/Input/TextFieldUncontroled';
 import { sendRequestToAuth } from 'components/Auth/actions';
 import { AuthContext } from 'context/Auth-context';
 
+import {GoogleAuthProvider, signInWithPopup} from 'firebase/auth';
+import {auth} from 'firebase'
+
 const useStyles = makeStyles({
   root: {
     textAlign: 'center',
@@ -45,6 +48,21 @@ const Signin = ({
   
   const history = useHistory();
   const classes = useStyles();
+
+  const signinWithGoogle = async () => {
+    setIsLoading(true);
+    const provider = new GoogleAuthProvider();
+
+    auth.useDeviceLanguage();
+
+    try {
+      await signInWithPopup(auth, provider);
+    } catch(error) {
+      console.log('error', error)
+    }
+
+    setIsLoading(false);
+  }
 
   const onSendRequestToAuth = (url: string) => {
     setIsLoading(true);
@@ -86,6 +104,10 @@ const Signin = ({
     );
   }
 
+  if (isLoading) {
+    return <div>Loading...</div>
+  }
+
   return (
     <Grid>
       <Paper elevation={20} style={paperStyle}>
@@ -113,6 +135,7 @@ const Signin = ({
             onClick={onGoToSignup}>
             Create new account
           </Button>
+          <button onClick={signinWithGoogle}>SIGN IN WITH GOOGLE</button>
         </Grid>
       </Paper>
     </Grid>

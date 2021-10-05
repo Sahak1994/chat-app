@@ -1,41 +1,43 @@
-import {useContext} from 'react';
-import { Link } from 'react-router-dom';
+// import {useContext} from 'react';
+// import { Link } from 'react-router-dom';
 
 import Button from '@mui/material/Button';
-import {AuthContext} from 'context/Auth-context';
+// import {AuthContext} from 'context/Auth-context';
 
 import classes from './Navigation.module.css';
 
-const MainNavigation = () => {
-  const {isLoggedIn, onLogout} = useContext(AuthContext);
+const MainNavigation = ({
+  isLoggedIn,
+  logout,
+}: {
+  isLoggedIn: boolean;
+  logout: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
+}) => {
+  // const {isLoggedIn, onLogout} = useContext(AuthContext);
 
   return (
     <header className={classes.header}>
-      <Link to='/'>
-        <div>Chat Exalt</div>
-      </Link>
+      <div>Chat Exalt</div>
       <nav>
         <ul>
-          {!isLoggedIn && (
+          {/* {!isLoggedIn && (
             <li>
               <Link to='/auth'>Login</Link>
             </li>
-          )}
-          {isLoggedIn && (
+          )} */}
+          {/* {isLoggedIn && (
             <li>
               <Link to='/chat'>Chat</Link>
             </li>
-          )}
-          {isLoggedIn && (
+          )} */}
+          {/* {isLoggedIn && (
             <li>
               <Link to='/change-password'>Change Password</Link>
             </li>
-          )}
-          {isLoggedIn && (
-            <li>
-              <Button onClick={onLogout}>Logout</Button>
-            </li>
-          )}
+          )} */}
+          <li>
+            {isLoggedIn && <Button onClick={logout}>Logout</Button>}
+          </li>
         </ul>
       </nav>
     </header>

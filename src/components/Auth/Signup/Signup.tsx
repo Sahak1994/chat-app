@@ -68,7 +68,6 @@ const Signup = ({
       }
     })
     .then(data => {
-      console.log('data', data)
       onLogin(data.idToken);
       history.push('/')
     })

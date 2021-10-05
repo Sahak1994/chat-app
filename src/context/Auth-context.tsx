@@ -19,14 +19,11 @@ const AuthContextProvider = ({children}: AuthContextProviderProps) => {
 
   const isLoggedIn = Boolean(token);
 
-  console.log(isLoggedIn)
-
   useEffect(() => {
       localStorage.setItem('tokenId', token || '');
   }, [token, setToken])
 
   const login = (token: string) => {
-    console.log('token', token);
     setToken(token);
   }
 
