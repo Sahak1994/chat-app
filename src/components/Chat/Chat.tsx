@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import {db} from 'firebase';
-import {collection, getDocs, addDoc} from 'firebase/firestore';
+import {collection, getDocs, addDoc, onSnapshot} from 'firebase/firestore';
 
 import Message from 'components/Message/Message';
 
@@ -40,13 +40,15 @@ const Chat = ({
     getData();
   }, []);
 
-  // const bottomListRef = useRef();
+  useEffect(() => {
+    const unsubscribe = onSnapshot(collection(db, "messages"), (doc) => {
+      doc.docs.forEach(msg => {
+        console.log(msg.data())
+      })
+    });
 
-  // useEffect(() => {
-  //   if (inputRef.current) {
-  //     inputRef.current.focus();
-  //   }
-  // }, [inputRef]);
+    return unsubscribe;
+  }, [])
 
   const handleOnChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setNewMessage(e.target.value);
@@ -112,13 +114,12 @@ const Chat = ({
               ))
               }
           </ul>
-          {/* <div ref={bottomListRef} /> */}
         </div>
       </div>
       <div className="mb-6 mx-4">
         <form
           onSubmit={handleOnSubmit}
-          className="flex flex-row bg-gray-200 dark:bg-coolDark-400 rounded-md px-4 py-3 z-10 max-w-screen-lg mx-auto dark:text-white shadow-md"
+          className={classes.form}
         >
           <InputField
             type="text"

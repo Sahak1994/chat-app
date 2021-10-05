@@ -31,3 +31,13 @@
   max-height: 600px;
   overflow: auto;
 }
+
+.form {
+  /* "flex flex-row bg-gray-200 dark:bg-coolDark-400 rounded-md px-4 py-3 z-10 max-w-screen-lg mx-auto dark:text-white shadow-md" */
+
+  display: flex;
+  justify-content: space-around;
+  background-color: rgb(247, 241, 241);
+  border-radius: 8px;
+  padding: 16px;
+}
