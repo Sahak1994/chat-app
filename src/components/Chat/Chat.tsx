@@ -1,6 +1,6 @@
 import { useEffect, useState, useRef } from 'react';
 import {db} from 'firebase';
-import {collection, doc, getDoc, getDocs, addDoc, Timestamp} from 'firebase/firestore';
+import {collection, getDocs, addDoc, onSnapshot, query} from 'firebase/firestore';
 // import { useFirestoreQuery } from './hooks';
 // Components
 import Message from 'components/Message/Message';
@@ -35,9 +35,8 @@ const Chat = ({
     }
 
     getData();
-  }, [])
+  }, []);
 
-  console.log(messages)
   const inputRef = useRef() as (React.LegacyRef<HTMLInputElement> | undefined );
   // const bottomListRef = useRef();
 
@@ -65,14 +64,22 @@ const Chat = ({
 
       const createdAt = `${year}-${month}-${day}-${time}`
       // const docRef = 
-      await addDoc(collection(db, 'messages'), {
+      const docRef = await addDoc(collection(db, 'messages'), {
         uid,
         displayName,
         createdAt,
         text: trimmedMessage,
       })
+
       // Clear input field
       setNewMessage('');
+
+      setMessages(prevState => {
+        return [
+          ...prevState,
+          { uid, displayName, createdAt, text: trimmedMessage }
+        ]
+      })
     }
   };
 
