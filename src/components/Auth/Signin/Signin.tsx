@@ -5,7 +5,7 @@ import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
 import Button from '@mui/material/Button';
 import {makeStyles} from '@mui/styles';
-import TextField from 'elements/Input/TextFieldUncontroled';
+import TextField from 'elements/Input/InputField';
 import { sendRequestToAuth } from 'components/Auth/actions';
 import { AuthContext } from 'context/Auth-context';
 

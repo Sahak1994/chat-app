@@ -1,0 +1,33 @@
+.chat {
+  display: flex;
+  flex-direction: column;
+}
+
+.chat_part {
+  overflow: auto;
+  height: 100%;
+}
+
+.header {
+  border: 1px solid #ccc;
+  padding: 5px;
+  border-radius: 8px;
+  margin-bottom: 3px;
+}
+
+.title {
+  font-weight: bold;
+  font-size: 25px;
+}
+
+.subText {
+  font-weight: 400;
+  text-align: center;
+}
+
+.list {
+  margin: 0;
+  padding: 0;
+  max-height: 600px;
+  overflow: auto;
+}

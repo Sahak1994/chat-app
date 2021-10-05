@@ -1,11 +1,11 @@
 import { TextField } from '@mui/material';
 
-const InputUncontroled = ({
+const InputField = ({
   value,
   onChange,
   type,
   label,
-}: InputUncontroledProps) => {
+}: InputFieldProps) => {
   return (
     <TextField
       value={value}
@@ -17,9 +17,9 @@ const InputUncontroled = ({
   );
 }
 
-export default InputUncontroled;
+export default InputField;
 
-interface InputUncontroledProps {
+interface InputFieldProps {
   value: string;
   onChange: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
   type: string;

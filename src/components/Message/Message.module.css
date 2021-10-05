@@ -1,0 +1,38 @@
+.message {
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  padding: 16px;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.message:hover {
+  background-color: lightgray;
+}
+
+.avatar {
+  border-radius: 50%;
+  margin-right: 16px;
+}
+
+.name {
+  font-weight: bold;
+  font-size: 20px;
+}
+
+.date {
+  font-weight: bold;
+  font-size: 10px;
+}
+
+.message {
+  color: #212121;
+  font-size: 18px;
+}
+
+.description {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 10px;
+}

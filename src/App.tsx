@@ -26,7 +26,7 @@ const useStyles = makeStyles({
 
 const paperStyle = {
   padding: '30px 20px',
-  width: 300,
+  width: '70%',
   margin: '20px auto',
 };
 

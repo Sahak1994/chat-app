@@ -1,9 +1,12 @@
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState } from 'react';
 import {db} from 'firebase';
-import {collection, getDocs, addDoc, onSnapshot, query} from 'firebase/firestore';
-// import { useFirestoreQuery } from './hooks';
-// Components
+import {collection, getDocs, addDoc} from 'firebase/firestore';
+
 import Message from 'components/Message/Message';
+
+import classes from './Chat.module.css';
+import InputField from 'elements/Input/InputField';
+import { Button } from '@mui/material';
 
 interface MessageType {
   uid: string;
@@ -37,7 +40,6 @@ const Chat = ({
     getData();
   }, []);
 
-  const inputRef = useRef() as (React.LegacyRef<HTMLInputElement> | undefined );
   // const bottomListRef = useRef();
 
   // useEffect(() => {
@@ -46,7 +48,7 @@ const Chat = ({
   //   }
   // }, [inputRef]);
 
-  const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleOnChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setNewMessage(e.target.value);
   };
 
@@ -63,8 +65,8 @@ const Chat = ({
       const time = `${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`;
 
       const createdAt = `${year}-${month}-${day}-${time}`
-      // const docRef = 
-      const docRef = await addDoc(collection(db, 'messages'), {
+
+      await addDoc(collection(db, 'messages'), {
         uid,
         displayName,
         createdAt,
@@ -84,23 +86,23 @@ const Chat = ({
   };
 
   return (
-    <div className="flex flex-col h-full">
-      <div className="overflow-auto h-full">
-        <div className="py-4 max-w-screen-lg mx-auto">
-          <div className="border-b dark:border-gray-600 border-gray-200 py-8 mb-4">
-            <div className="font-bold text-3xl text-center">
-              <p className="mb-1">Welcome to</p>
-              <p className="mb-3">React FireChat</p>
+    <div className={classes.chat}>
+      <div className={classes['chat_part']}>
+        <div>
+          <div className={classes.header}>
+            <div className={classes.title}>
+              <p>Welcome to</p>
+              <p>Chat Exalt</p>
             </div>
-            <p className="text-gray-400 text-center">
+            <p className={classes.subText}>
               This is the beginning of this chat.
             </p>
           </div>
-          <ul>
+          <ul className={classes.list}>
             {messages.sort((first, second) =>
               new Date(first.createdAt).getTime() - new Date(second.createdAt).getTime()
             ).map((message, index) => (
-                <li key={index.toString()}>
+                <li key={index.toString()} style={{listStyleType: 'none'}}>
                   <Message 
                     createdAt={message.createdAt}
                     displayName={message.displayName}
@@ -118,21 +120,19 @@ const Chat = ({
           onSubmit={handleOnSubmit}
           className="flex flex-row bg-gray-200 dark:bg-coolDark-400 rounded-md px-4 py-3 z-10 max-w-screen-lg mx-auto dark:text-white shadow-md"
         >
-          <input
-            ref={inputRef}
+          <InputField
             type="text"
             value={newMessage}
             onChange={handleOnChange}
-            placeholder="Type your message here..."
-            className="flex-1 bg-transparent outline-none"
+            label='Message'
           />
-          <button
+          <Button
             type="submit"
+            variant='contained'
             disabled={!newMessage}
-            className="uppercase font-semibold text-sm tracking-wider text-gray-500 hover:text-gray-900 dark:hover:text-white transition-colors"
           >
             Send
-          </button>
+          </Button>
         </form>
       </div>
     </div>

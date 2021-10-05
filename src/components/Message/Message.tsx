@@ -1,3 +1,5 @@
+import classes from './Message.module.css';
+
 const Message = ({
   createdAt,
   text = '',
@@ -7,27 +9,26 @@ const Message = ({
   if (!text) return null;
 
   return (
-    <div className="px-4 py-4 rounded-md hover:bg-gray-50 dark:hover:bg-coolDark-600 overflow-hidden flex items-start">
+    <div className={classes.message}>
       {photoUrl ? (
         <img
           src={photoUrl}
           alt="Avatar"
-          className="rounded-full mr-4"
+          className={classes.avatar}
           width={45}
           height={45}
         />
       ) : null}
       <div>
-        <div className="flex items-center mb-1">
+        <div className={classes.description}>
           {displayName ? (
-            <p className="mr-2 text-primary-500">{displayName}</p>
+            <p className={classes.name}>{displayName}</p>
           ) : null}
-            <span className="text-gray-500 text-xs">
+            <span className={classes.date}>
               {createdAt}
             </span>
-          )
         </div>
-        <p>{text}</p>
+        <p className={classes.message}>{text}</p>
       </div>
     </div>
   );

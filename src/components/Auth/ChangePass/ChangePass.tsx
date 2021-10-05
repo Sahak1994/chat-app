@@ -1,7 +1,7 @@
 import {useState} from 'react';
 
 import { Button } from '@mui/material';
-import TextField from 'elements/Input/TextFieldUncontroled';
+import TextField from 'elements/Input/InputField';
 
 import classes from './ChangePass.module.css';
 
