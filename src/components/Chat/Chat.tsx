@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react';
 import {db} from 'firebase';
 import {collection, getDocs, addDoc, onSnapshot} from 'firebase/firestore';
+import { v4 as uuidv4 } from 'uuid';
+import { useTranslation } from "react-i18next";
 
 import Message from 'components/Message/Message';
 
@@ -21,6 +23,7 @@ const Chat = ({
   displayName, 
   photoUrl,
 } : ChatProps) => {
+  const {t} = useTranslation();
   const [messages, setMessages] = useState<MessageType[]>([]);
   const [newMessage, setNewMessage] = useState('');
 
@@ -90,18 +93,18 @@ const Chat = ({
         <div>
           <div className={classes.header}>
             <div className={classes.title}>
-              <p>Welcome to</p>
-              <p>Chat Exalt</p>
+              <p>{t("welcome_to")}</p>
+              <p>{t('title')}</p>
             </div>
             <p className={classes.subText}>
-              This is the beginning of this chat.
+              {t('subtitle')}
             </p>
           </div>
           <ul className={classes.list}>
             {messages.sort((first, second) =>
               new Date(first.createdAt).getTime() - new Date(second.createdAt).getTime()
-            ).map((message, index) => (
-                <li key={index.toString()} style={{listStyleType: 'none'}}>
+            ).map((message) => (
+                <li key={uuidv4()} style={{listStyleType: 'none'}}>
                   <Message 
                     createdAt={message.createdAt}
                     displayName={message.displayName}
@@ -122,14 +125,14 @@ const Chat = ({
             type="text"
             value={newMessage}
             onChange={handleOnChange}
-            label='Message'
+            label={t('message')}
           />
           <Button
             type="submit"
             variant='contained'
             disabled={!newMessage}
           >
-            Send
+            {t('send')}
           </Button>
         </form>
       </div>

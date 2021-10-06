@@ -53,3 +53,7 @@
   background-color: #c291e2;
   color: #38015c;
 }
+
+.nav {
+  display: flex;
+}

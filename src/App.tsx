@@ -1,11 +1,12 @@
 import {useState, useEffect} from 'react';
 // import {Switch, Route, Redirect} from 'react-router-dom';
 import {onAuthStateChanged, signInWithPopup, GoogleAuthProvider, signOut} from 'firebase/auth';
+import { useTranslation } from "react-i18next";
 // import {collection, getDocs} from 'firebase/firestore';
 
-import Welcome from 'pages/Welcome/Welcome';
+// import Welcome from 'pages/Welcome/Welcome';
 import Chat from 'components/Chat/Chat';
-import Auth from 'pages/AuthPage/Auth';
+// import Auth from 'pages/AuthPage/Auth';
 // import Layout from 'components/Layout/Layout';
 // import AuthContextProvider from 'context/Auth-context';
 // import ChangePass from 'components/Auth/ChangePass/ChangePass';
@@ -14,6 +15,7 @@ import {auth} from 'firebase';
 import { Button, Grid, Paper } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import MainNavigation from 'components/Layout/Navigation';
+import Cookies from 'js-cookie';
 
 // const usersColl = collection(db, 'users');
 // const snapshot = getDocs(usersColl);
@@ -31,6 +33,8 @@ const paperStyle = {
 };
 
 function App() {
+  const currentLanguageCode = Cookies.get('i18next') || 'en';
+  const {t} = useTranslation();
   const [user, setUser] = useState(() => auth.currentUser);
   const [initializing, setInitializing] = useState(true);
 
@@ -70,17 +74,22 @@ function App() {
     });
 
     return unSubscribe;
-  }, [initializing]) 
+  }, [initializing])
+
+  useEffect(() => {
+    document.title = t('title')
+  }, [currentLanguageCode, t])
 
   return (
     <Grid>
-      <MainNavigation 
+      <MainNavigation
+        currentLanguageCode={currentLanguageCode}
         isLoggedIn={!!user}
         logout={logout} />
       <Paper elevation={20} style={paperStyle}>
         <Grid className={styles.root}>
-          {initializing ? <div>Loading...</div> : 
-          !user ? <Button onClick={signinWithGoogle}>SIGN IN WITH GOOGLE</Button> : (
+          {initializing ? <div>{t('loading')}...</div> : 
+          !user ? <Button onClick={signinWithGoogle}>{t('sign_in')}</Button> : (
             <Chat
               uid={user.uid}
               displayName={user.displayName || 'Unknown user'}
