@@ -13,7 +13,7 @@ import classes from './Navigation.module.css';
 
 const languages = [
   {code: 'en', name: 'English', country_code: 'gb'},
-  {code: 'ru', name: 'Russian', country_code: 'sa'},
+  {code: 'ru', name: 'Russian', country_code: 'ru'},
 ]
 
 type CodeType = 'en' | 'ru';
