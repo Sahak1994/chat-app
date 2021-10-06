@@ -81,7 +81,7 @@ function App() {
         <Grid className={styles.root}>
           {initializing ? <div>Loading...</div> : 
           !user ? <Button onClick={signinWithGoogle}>SIGN IN WITH GOOGLE</Button> : (
-            <Chat 
+            <Chat
               uid={user.uid}
               displayName={user.displayName || 'Unknown user'}
               photoUrl={user.photoURL || ''} />

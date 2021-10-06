@@ -13,12 +13,13 @@ interface MessageType {
   displayName: string;
   createdAt: string;
   text: string;
+  photoUrl: string;
 }
 
-const Chat = ({ 
+const Chat = ({
   uid, 
   displayName, 
-  photoUrl ,
+  photoUrl,
 } : ChatProps) => {
   const [messages, setMessages] = useState<MessageType[]>([]);
   const [newMessage, setNewMessage] = useState('');
@@ -26,8 +27,6 @@ const Chat = ({
   useEffect(() => {
     async function getData() {
       const messages = await getDocs(collection(db, 'messages'));
-
-      console.log('messages', messages);
       const data: MessageType[] = [];
 
       messages.forEach((doc) => {
@@ -42,9 +41,13 @@ const Chat = ({
 
   useEffect(() => {
     const unsubscribe = onSnapshot(collection(db, "messages"), (doc) => {
+      const updatedMessages: MessageType[] = [];
+
       doc.docs.forEach(msg => {
-        console.log(msg.data())
-      })
+        updatedMessages.push(msg.data() as MessageType);
+      });
+
+      setMessages(updatedMessages);
     });
 
     return unsubscribe;
@@ -73,17 +76,11 @@ const Chat = ({
         displayName,
         createdAt,
         text: trimmedMessage,
+        photoUrl,
       })
 
       // Clear input field
       setNewMessage('');
-
-      setMessages(prevState => {
-        return [
-          ...prevState,
-          { uid, displayName, createdAt, text: trimmedMessage }
-        ]
-      })
     }
   };
 
@@ -109,7 +106,7 @@ const Chat = ({
                     createdAt={message.createdAt}
                     displayName={message.displayName}
                     text={message.text}
-                    photoUrl={photoUrl} />
+                    photoUrl={message.photoUrl} />
                 </li>
               ))
               }
