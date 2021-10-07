@@ -1,5 +1,6 @@
 .chat {
   display: flex;
+  border-radius: 8px;
   flex-direction: column;
 }
 

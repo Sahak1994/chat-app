@@ -6,6 +6,7 @@ const Message = ({
   displayName = '',
   photoUrl,
 } : MessageProps) => {
+
   if (!text) return null;
 
   return (

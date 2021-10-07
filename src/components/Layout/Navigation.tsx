@@ -1,13 +1,14 @@
-import React, {useState} from 'react';
+import React, {useContext, useState} from 'react';
 import i18n from "i18next";
 import { useTranslation } from "react-i18next";
-// import { Link } from 'react-router-dom';
 
+import LightModeIcon from '@mui/icons-material/LightMode';
+import DarkModeIcon from '@mui/icons-material/DarkMode';
+import ThemeContext from 'context/theme-context';
 import Button from '@mui/material/Button';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import LanguageIcon from '@mui/icons-material/Language';
-// import {AuthContext} from 'context/Auth-context';
 
 import classes from './Navigation.module.css';
 
@@ -24,26 +25,45 @@ const MainNavigation = ({
   logout,
 } : MainNavigationProps) => {
   const {t} = useTranslation();
+  const {mode, onThemeChange, theme} = useContext(ThemeContext);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
+
   const handleClick = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     setAnchorEl(event.currentTarget);
   };
+
   const handleClose = (code?: CodeType) => {
     if (code) {
-      // console.log(code)
       i18n.changeLanguage(code);
     }
     setAnchorEl(null);
   };
 
+  const handleChangeTheme = () => {
+    onThemeChange(mode === 'light' ? 'dark' : 'light');
+  }
+
   return (
-    <header className={classes.header}>
-      <div>{t('title')}</div>
+    <header 
+      style={{
+        backgroundColor: theme.palette.secondary.main,
+        color: theme.palette.secondary.contrastText
+      }} 
+      className={classes.header}>
+      <div className={classes.title}>{t('title')}</div>
       <nav className={classes.nav}>
         <div>
           <Button
-            id="demo-positioned-button"
+            id="demo-mode-button"
+            style={{marginRight: '16px'}}
+            onClick={handleChangeTheme}>
+            {mode === 'light' ? <DarkModeIcon /> : <LightModeIcon />}
+          </Button>
+        </div>
+        <div>
+          <Button
+            id="demo-language-button"
             aria-controls="demo-positioned-menu"
             aria-haspopup="true"
             aria-expanded={open ? 'true' : undefined}
@@ -66,8 +86,7 @@ const MainNavigation = ({
               horizontal: 'left',
             }}
           >
-           {languages.map(lang => {
-             return (
+           {languages.map(lang => (
               <MenuItem
                 key={lang.code}
                 disabled={currentLanguageCode === lang.code}
@@ -77,26 +96,10 @@ const MainNavigation = ({
                     className={`flag-icon flag-icon-${lang.country_code} mx-2`}></span>
                   {t(lang.name)}
               </MenuItem>
-             );
-           })}
+            ))}
           </Menu>
         </div>
         <ul>
-          {/* {!isLoggedIn && (
-            <li>
-              <Link to='/auth'>Login</Link>
-            </li>
-          )} */}
-          {/* {isLoggedIn && (
-            <li>
-              <Link to='/chat'>Chat</Link>
-            </li>
-          )} */}
-          {/* {isLoggedIn && (
-            <li>
-              <Link to='/change-password'>Change Password</Link>
-            </li>
-          )} */}
           <li>
             {isLoggedIn && <Button onClick={logout}>{t('logout')}</Button>}
           </li>

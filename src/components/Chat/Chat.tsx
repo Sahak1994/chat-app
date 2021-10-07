@@ -1,14 +1,15 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useContext } from 'react';
 import {db} from 'firebase';
 import {collection, getDocs, addDoc, onSnapshot} from 'firebase/firestore';
 import { v4 as uuidv4 } from 'uuid';
 import { useTranslation } from "react-i18next";
 
 import Message from 'components/Message/Message';
+import ThemeContext from 'context/theme-context';
 
-import classes from './Chat.module.css';
 import InputField from 'elements/Input/InputField';
 import { Button } from '@mui/material';
+import classes from './Chat.module.css';
 
 interface MessageType {
   uid: string;
@@ -24,6 +25,7 @@ const Chat = ({
   photoUrl,
 } : ChatProps) => {
   const {t} = useTranslation();
+  const {theme} = useContext(ThemeContext);
   const [messages, setMessages] = useState<MessageType[]>([]);
   const [newMessage, setNewMessage] = useState('');
 
@@ -88,7 +90,9 @@ const Chat = ({
   };
 
   return (
-    <div className={classes.chat}>
+    <div
+      style={{backgroundColor: theme.palette.secondary.main}} 
+      className={classes.chat}>
       <div className={classes['chat_part']}>
         <div>
           <div className={classes.header}>
@@ -116,7 +120,7 @@ const Chat = ({
           </ul>
         </div>
       </div>
-      <div className="mb-6 mx-4">
+      <div>
         <form
           onSubmit={handleOnSubmit}
           className={classes.form}

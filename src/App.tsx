@@ -1,24 +1,14 @@
 import {useState, useEffect} from 'react';
-// import {Switch, Route, Redirect} from 'react-router-dom';
 import {onAuthStateChanged, signInWithPopup, GoogleAuthProvider, signOut} from 'firebase/auth';
 import { useTranslation } from "react-i18next";
-// import {collection, getDocs} from 'firebase/firestore';
-
-// import Welcome from 'pages/Welcome/Welcome';
-import Chat from 'components/Chat/Chat';
-// import Auth from 'pages/AuthPage/Auth';
-// import Layout from 'components/Layout/Layout';
-// import AuthContextProvider from 'context/Auth-context';
-// import ChangePass from 'components/Auth/ChangePass/ChangePass';
-
 import {auth} from 'firebase';
-import { Button, Grid, Paper } from '@mui/material';
-import { makeStyles } from '@mui/styles';
-import MainNavigation from 'components/Layout/Navigation';
 import Cookies from 'js-cookie';
 
-// const usersColl = collection(db, 'users');
-// const snapshot = getDocs(usersColl);
+import Chat from 'components/Chat/Chat';
+import MainNavigation from 'components/Layout/Navigation';
+
+import { Button, Grid, Paper } from '@mui/material';
+import { makeStyles } from '@mui/styles';
 
 const useStyles = makeStyles({
   root: {
@@ -99,24 +89,6 @@ function App() {
       </Paper>
     </Grid>
   );
-
-  // return user ? (
-  //   <Welcome />
-  //   ) : (
-  //     <Auth />
-  //   );
-  
-  // return (
-  //   <AuthContextProvider>
-  //     <Layout>
-  //       <Switch>
-  //         {user && <Route path='/' component={Welcome} exact />}
-  //         <Route path='/auth' component={Auth} />
-  //         <Redirect to='/auth' />
-  //       </Switch>
-  //     </Layout>
-  //   </AuthContextProvider>
-  // );
 }
 
 export default App;

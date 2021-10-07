@@ -1,17 +1,17 @@
 import { Suspense } from 'react';
 import ReactDOM from 'react-dom';
-import {BrowserRouter } from 'react-router-dom';
-
-import { ThemeProvider } from '@mui/material/styles';
-import {theme} from 'theme';
 import i18n from "i18next";
 import { initReactI18next } from "react-i18next";
+import HttpApi from 'i18next-http-backend';
 import 'flag-icon-css/css/flag-icon.min.css';
 import LanguageDetector from 'i18next-browser-languagedetector';
-import HttpApi from 'i18next-http-backend';
 
 import App from 'App';
 
+import {ThemeContextProvider} from 'context/theme-context';
+import {theme} from 'theme';
+
+import { ThemeProvider } from '@mui/material/styles';
 import './index.css';
 
 i18n
@@ -36,22 +36,13 @@ i18n
     }
   });
 
-// function App() {
-//   const { t } = useTranslation();
-
-//   return <h2>{t('welcome_to_react')}</h2>;
-// }
-
-
-
-
 ReactDOM.render(
-  <BrowserRouter>
+  <ThemeContextProvider>
     <ThemeProvider theme={theme}>
       <Suspense fallback='Loading...'>
         <App />
       </Suspense>
     </ThemeProvider>
-  </BrowserRouter>,
+  </ThemeContextProvider>,
   document.getElementById('root')
 );
