@@ -38,23 +38,24 @@ const Room = ({
   const [messages, setMessages] = useState<MessageType[]>([]);
   const [newMessage, setNewMessage] = useState('');
 
-  useEffect(() => {
-    async function getData() {
-      const q = query(collection(db, 'contacts'), where('user_id_1', '==', myId));
-      const myMessages = await getDocs(q);
-      const data: MessageType[] = [];
+  // useEffect(() => {
+  //   async function getData() {
+  //     const q = query(collection(db, 'contacts'), where('user_id_1', '==', myId));
+  //     const myMessages = await getDocs(q);
+  //     const data: MessageType[] = [];
 
-      myMessages.forEach((doc) => {
-        if (doc.data().user_id_2 === userId) {
-          data.push(doc.data() as MessageType);
-        }
-      });
+  //     myMessages.forEach((doc) => {
+  //       if (doc.data().user_id_2 === userId) {
+  //         data.push(doc.data() as MessageType);
+  //       }
+  //     });
 
-      setMessages(data);
-    }
+  //     setMessages(data);
+  //   }
 
-    getData();
-  }, [myId, userId]);
+  //   getData();
+  // }, [myId, userId]);
+  
 
   useEffect(() => {
     const unsubscribe = onSnapshot(collection(db, "contacts"), (doc) => {
