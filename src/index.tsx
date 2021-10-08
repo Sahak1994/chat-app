@@ -1,5 +1,6 @@
 import { Suspense } from 'react';
 import ReactDOM from 'react-dom';
+import {BrowserRouter as Router} from 'react-router-dom';
 import i18n from "i18next";
 import { initReactI18next } from "react-i18next";
 import HttpApi from 'i18next-http-backend';
@@ -37,12 +38,14 @@ i18n
   });
 
 ReactDOM.render(
-  <ThemeContextProvider>
-    <ThemeProvider theme={theme}>
-      <Suspense fallback='Loading...'>
-        <App />
-      </Suspense>
-    </ThemeProvider>
-  </ThemeContextProvider>,
+  <Router>
+    <ThemeContextProvider>
+      <ThemeProvider theme={theme}>
+        <Suspense fallback='Loading...'>
+          <App />
+        </Suspense>
+      </ThemeProvider>
+    </ThemeContextProvider>
+  </Router>,
   document.getElementById('root')
 );

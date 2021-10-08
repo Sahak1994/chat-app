@@ -1,7 +1,7 @@
 import { useEffect, useState, useContext } from 'react';
-import {useHistory} from 'react-router-dom';
+import {useParams} from 'react-router-dom';
 import {db} from 'firebase';
-import {collection, getDocs, addDoc, onSnapshot} from 'firebase/firestore';
+import {collection, getDocs, addDoc, onSnapshot, where, query} from 'firebase/firestore';
 import { v4 as uuidv4 } from 'uuid';
 import { useTranslation } from "react-i18next";
 
@@ -11,7 +11,12 @@ import ChatHeader from 'components/UI/ChatHeader/ChatHeader';
 
 import InputField from 'elements/Input/InputField';
 import { Button } from '@mui/material';
-import classes from './Chat.module.css';
+
+import classes from './Room.module.css';
+
+type ParamsType ={
+  userId: string;
+}
 
 interface MessageType {
   uid: string;
@@ -21,34 +26,44 @@ interface MessageType {
   photoUrl: string;
 }
 
-const Chat = ({
-  uid, 
+const Room = ({
+  uid: myId, 
   displayName, 
   photoUrl,
-} : ChatProps) => {
+}: RoomProps) => {
+  const {userId}: ParamsType = useParams();
   const {t} = useTranslation();
-  const history = useHistory();
   const {theme} = useContext(ThemeContext);
+
   const [messages, setMessages] = useState<MessageType[]>([]);
   const [newMessage, setNewMessage] = useState('');
 
+  console.log('userId', userId);
+  console.log('myId', myId);
+
+  console.log('messages', messages)
+
   useEffect(() => {
     async function getData() {
-      const messages = await getDocs(collection(db, 'messages'));
+      const q = query(collection(db, 'contacts'), where('user_id_1', '==', myId));
+      const myMessages = await getDocs(q);
       const data: MessageType[] = [];
 
-      messages.forEach((doc) => {
-        data.push(doc.data() as MessageType);
+      myMessages.forEach((doc) => {
+        console.log('d', doc.data());
+        if (doc.data().user_id_2 === userId) {
+          data.push(doc.data() as MessageType);
+        }
       });
 
       setMessages(data);
     }
 
     getData();
-  }, []);
+  }, [myId, userId]);
 
   useEffect(() => {
-    const unsubscribe = onSnapshot(collection(db, "messages"), (doc) => {
+    const unsubscribe = onSnapshot(collection(db, "contacts"), (doc) => {
       const updatedMessages: MessageType[] = [];
 
       doc.docs.forEach(msg => {
@@ -79,8 +94,9 @@ const Chat = ({
 
       const createdAt = `${year}-${month}-${day}-${time}`
 
-      await addDoc(collection(db, 'messages'), {
-        uid,
+      await addDoc(collection(db, 'contacts'), {
+        user_id_1: myId,
+        user_id_2: userId,
         displayName,
         createdAt,
         text: trimmedMessage,
@@ -91,12 +107,6 @@ const Chat = ({
       setNewMessage('');
     }
   };
-
-  const goToUserPage = (id: string) => {
-    if (id !== uid) {
-      history.push(id)
-    }
-  }
 
   return (
     <div
@@ -110,10 +120,9 @@ const Chat = ({
               new Date(first.createdAt).getTime() - new Date(second.createdAt).getTime()
             ).map((message) => (
                 <li
-                  onClick={() => goToUserPage(message.uid)}
                   key={uuidv4()}
                   style={{
-                    cursor: message.uid === uid ? '' : 'pointer'
+                    cursor: message.uid === myId ? '' : 'pointer'
                   }}
                   className={classes.message}>
                     <Message 
@@ -149,12 +158,12 @@ const Chat = ({
       </div>
     </div>
   );
-};
+}
 
-interface ChatProps {
+interface RoomProps {
   uid: string;
   displayName: string;
   photoUrl: string;
-};
+}
 
-export default Chat;
+export default Room;

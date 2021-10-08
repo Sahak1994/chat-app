@@ -1,0 +1,16 @@
+.header {
+  border: 1px solid #ccc;
+  padding: 5px;
+  border-radius: 8px;
+  margin-bottom: 3px;
+}
+
+.title {
+  font-weight: bold;
+  font-size: 25px;
+}
+
+.subText {
+  font-weight: 400;
+  text-align: center;
+}

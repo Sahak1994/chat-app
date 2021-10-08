@@ -1,10 +1,12 @@
 import {useState, useEffect} from 'react';
+import {Switch, Route} from 'react-router-dom';
 import {onAuthStateChanged, signInWithPopup, GoogleAuthProvider, signOut} from 'firebase/auth';
 import { useTranslation } from "react-i18next";
 import {auth} from 'firebase';
 import Cookies from 'js-cookie';
 
 import Chat from 'components/Chat/Chat';
+import Room from 'components/Room/Room';
 import MainNavigation from 'components/Layout/Navigation';
 
 import { Button, Grid, Paper } from '@mui/material';
@@ -80,10 +82,20 @@ function App() {
         <Grid className={styles.root}>
           {initializing ? <div>{t('loading')}...</div> : 
           !user ? <Button onClick={signinWithGoogle}>{t('sign_in')}</Button> : (
-            <Chat
-              uid={user.uid}
-              displayName={user.displayName || 'Unknown user'}
-              photoUrl={user.photoURL || ''} />
+            <Switch>
+              <Route path='/' exact>
+                <Chat
+                  uid={user.uid}
+                  displayName={user.displayName || 'Unknown user'}
+                  photoUrl={user.photoURL || ''} />
+              </Route>
+              <Route path='/:userId'>
+                <Room 
+                  uid={user.uid}
+                  displayName={user.displayName || 'Unknown user'}
+                  photoUrl={user.photoURL || ''} />
+              </Route>
+            </Switch>
           )}
         </Grid>
       </Paper>
