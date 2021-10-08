@@ -38,11 +38,6 @@ const Room = ({
   const [messages, setMessages] = useState<MessageType[]>([]);
   const [newMessage, setNewMessage] = useState('');
 
-  console.log('userId', userId);
-  console.log('myId', myId);
-
-  console.log('messages', messages)
-
   useEffect(() => {
     async function getData() {
       const q = query(collection(db, 'contacts'), where('user_id_1', '==', myId));
@@ -50,7 +45,6 @@ const Room = ({
       const data: MessageType[] = [];
 
       myMessages.forEach((doc) => {
-        console.log('d', doc.data());
         if (doc.data().user_id_2 === userId) {
           data.push(doc.data() as MessageType);
         }
@@ -67,14 +61,18 @@ const Room = ({
       const updatedMessages: MessageType[] = [];
 
       doc.docs.forEach(msg => {
-        updatedMessages.push(msg.data() as MessageType);
+        if (
+          (msg.data().user_id_1 === myId && msg.data().user_id_2 === userId) ||
+          (msg.data().user_id_1 === userId && msg.data().user_id_2 === myId)) {
+            updatedMessages.push(msg.data() as MessageType);
+          }
       });
 
       setMessages(updatedMessages);
     });
 
     return unsubscribe;
-  }, [])
+  }, [myId, userId])
 
   const handleOnChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setNewMessage(e.target.value);
@@ -121,9 +119,6 @@ const Room = ({
             ).map((message) => (
                 <li
                   key={uuidv4()}
-                  style={{
-                    cursor: message.uid === myId ? '' : 'pointer'
-                  }}
                   className={classes.message}>
                     <Message 
                       createdAt={message.createdAt}
