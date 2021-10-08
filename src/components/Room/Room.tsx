@@ -1,7 +1,7 @@
 import { useEffect, useState, useContext } from 'react';
 import {useParams} from 'react-router-dom';
 import {db} from 'firebase';
-import {collection, getDocs, addDoc, onSnapshot, where, query} from 'firebase/firestore';
+import {collection, addDoc, onSnapshot} from 'firebase/firestore';
 import { v4 as uuidv4 } from 'uuid';
 import { useTranslation } from "react-i18next";
 
@@ -37,25 +37,6 @@ const Room = ({
 
   const [messages, setMessages] = useState<MessageType[]>([]);
   const [newMessage, setNewMessage] = useState('');
-
-  // useEffect(() => {
-  //   async function getData() {
-  //     const q = query(collection(db, 'contacts'), where('user_id_1', '==', myId));
-  //     const myMessages = await getDocs(q);
-  //     const data: MessageType[] = [];
-
-  //     myMessages.forEach((doc) => {
-  //       if (doc.data().user_id_2 === userId) {
-  //         data.push(doc.data() as MessageType);
-  //       }
-  //     });
-
-  //     setMessages(data);
-  //   }
-
-  //   getData();
-  // }, [myId, userId]);
-  
 
   useEffect(() => {
     const unsubscribe = onSnapshot(collection(db, "contacts"), (doc) => {
