@@ -4,6 +4,8 @@ import {db} from 'firebase';
 import {collection, getDocs, addDoc, onSnapshot} from 'firebase/firestore';
 import { v4 as uuidv4 } from 'uuid';
 import { useTranslation } from "react-i18next";
+import { logEvent } from '@firebase/analytics';
+import { analytics } from 'firebase';
 
 import Message from 'components/Message/Message';
 import ThemeContext from 'context/theme-context';
@@ -33,6 +35,7 @@ const Chat = ({
   const [newMessage, setNewMessage] = useState('');
 
   useEffect(() => {
+    logEvent(analytics, 'Chat_page_visited');
     async function getData() {
       const messages = await getDocs(collection(db, 'messages'));
       const data: MessageType[] = [];

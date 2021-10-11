@@ -19,4 +19,4 @@ export const app = initializeApp(firebaseConfig);
 export const db = getFirestore(app);
 export const auth = getAuth(app);
 export const performance = getPerformance(app);
-export const analitics = getAnalytics(app);
+export const analytics = getAnalytics();
