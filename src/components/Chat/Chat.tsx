@@ -35,7 +35,10 @@ const Chat = ({
   const [newMessage, setNewMessage] = useState('');
 
   useEffect(() => {
-    logEvent(analytics, 'Chat_page_visited');
+    if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {} 
+    else {
+      logEvent(analytics, 'Chat_page_visited');
+    }
     async function getData() {
       const messages = await getDocs(collection(db, 'messages'));
       const data: MessageType[] = [];

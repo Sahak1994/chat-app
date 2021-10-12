@@ -41,7 +41,11 @@ const Room = ({
   const [newMessage, setNewMessage] = useState('');
 
   useEffect(() => {
-    logEvent(analytics, 'Room_page_visited');
+    if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {} 
+    else {
+      logEvent(analytics, 'Room_page_visited');
+    }
+    
     const unsubscribe = onSnapshot(collection(db, "contacts"), (doc) => {
       const updatedMessages: MessageType[] = [];
 

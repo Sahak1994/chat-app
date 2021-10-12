@@ -1,6 +1,8 @@
 import {useState, useEffect} from 'react';
 import {Switch, Route} from 'react-router-dom';
 import {onAuthStateChanged, signInWithPopup, GoogleAuthProvider, signOut} from 'firebase/auth';
+import {setUserProperties} from 'firebase/analytics';
+import { analytics } from 'firebase';
 import { useTranslation } from "react-i18next";
 import {auth} from 'firebase';
 import Cookies from 'js-cookie';
@@ -53,6 +55,9 @@ function App() {
   }
 
   useEffect(() => {
+    setUserProperties(analytics, {
+      testing: 'test_property!'
+    })
     const unSubscribe = onAuthStateChanged(auth, user => {
       if (user) {
         setUser(user);
